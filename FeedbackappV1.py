@@ -18,8 +18,6 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 # Adjusted file paths
 model_path = os.path.join(BASE_DIR, 'rf_model_8020_sept22.joblib')
 scaler_path = os.path.join(BASE_DIR, 'scaler_rf8020_sept22.joblib')
-selector_path = os.path.join(BASE_DIR, 'selector_rf8020sept22.joblib')
-#config_path = os.path.join(BASE_DIR, 'configpred50.yaml')
 training_data_path = os.path.join(BASE_DIR, 'training_rf8020_sept22.csv')
 
 # Load configuration safely
@@ -28,19 +26,15 @@ try:
     model1 = load(model_path)
 except Exception as e:
     print(f"Error loading the model: {str(e)}")
+    raise e
+
 
 try:
     scaler = load(scaler_path)
 except Exception as e:
     print(f"Error loading the scaler: {str(e)}")
 
-try:
-    selector = load(selector_path)
-except Exception as e:
-    print(f"Error loading the selector: {str(e)}")
 
-
-#
 feature_mapping = {
     'age': 'Age of company in years',
     'internetActivityScore': 'Internet Activity Score',
@@ -228,5 +222,5 @@ def predict_app():
 
 # Run the flask app
 if __name__ == '__main__':
-    FeedbackappV2.run(debug=True)
+    FeedbackappV2.run(debug=False)
   
