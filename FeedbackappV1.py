@@ -26,10 +26,19 @@ training_data_path = os.path.join(BASE_DIR, 'training_rf8020_sept22.csv')
 # Load trained model, scaler, and feature selector
 try:
     model1 = load(model_path)
+except Exception as e:
+    print(f"Error loading the model: {str(e)}")
+
+try:
     scaler = load(scaler_path)
+except Exception as e:
+    print(f"Error loading the scaler: {str(e)}")
+
+try:
     selector = load(selector_path)
 except Exception as e:
-    print(f"Error loading the model/scaler/selector files: {str(e)}")
+    print(f"Error loading the selector: {str(e)}")
+
 
 #
 feature_mapping = {
