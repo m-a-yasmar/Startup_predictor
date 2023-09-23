@@ -1,4 +1,3 @@
-import yaml
 from flask import Flask, render_template, request, jsonify
 from sklearn.preprocessing import StandardScaler
 from joblib import load
