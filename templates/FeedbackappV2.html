@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Startup Predictor</title>
+    <style>
+        body {
+            background-color: #F8F9FA;
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #333;
+            overflow-y: auto;
+            padding: 2em 0;
+            flex-direction: row;  /* Changed to row for side-by-side layout */
+        }
+
+        form {
+            width: 750px;
+            background-color: #ffffff;
+            padding: 2em;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            margin-right: 40px;  /* Space between form and progress bar */
+        }
+
+        form div+div {
+            margin-top: 1em;
+        }
+
+        label {
+            display: block;
+            width: 100%;
+            margin-bottom: 0.5em;
+            font-weight: bold;
+        }
+
+        input[type="number"],
+        input[type="text"],
+        input[type="radio"],
+        select {
+            font-size: 1em;
+            padding: 10px;
+            width: 100%;
+            border: 1px solid #E0E0E0;
+            border-radius: 5px;
+            transition: border-color 0.2s;
+        }
+
+        input[type="number"]:hover,
+        input[type="text"]:hover,
+        select:hover {
+            border-color: #007BFF;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2em;
+        }
+
+        h1 {
+            color: #007BFF;
+        }
+
+        .description {
+            font-size: 0.8em;
+            color: #666;
+            margin-bottom: 1em;
+        }
+
+        input[type="submit"] {
+            background-color: #007BFF;
+            color: #fff;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+	.welcome-container {
+    	    width: 700px;
+            background-color: #E9ECEF;
+            padding: 1em 1.5em;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 20px; /* adds a little space between the welcome message and the form */
+            font-size: 1.1em;    /* makes the text slightly larger */
+	}
+
+	.welcome-container p {
+    	    margin-top: 10px;
+	}
+
+        /* Modified progress bar styles for vertical display */
+        .progress-container {
+            height: 100%;
+            width: 40px;
+            background: #f3f3f3;
+            margin-left: 20px;
+            border-radius: 5px;
+            position: fixed;
+            top: 2em;
+            left: 0;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 0;
+            background: #007BFF;
+            border-radius: 5px;
+            transition: height 0.4s ease-in-out;
+            display: flex;
+            align-items: flex-end;  /* Align content to the bottom */
+            justify-content: center;
+            color: white;
+        }
+
+        .accordion {
+            cursor: pointer;
+            padding: 1em;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            transition: 0.4s;
+        }
+
+	.accordion.active {
+    	    background-color: #e7e7e7;
+            border-bottom: 1px solid #ddd;
+	}
+	.accordion::before {
+    	    content: '▶'; /* Right-pointing triangle */
+            margin-right: 10px; /* Space between the triangle and the text */
+	}
+	.accordion.active::before {
+    	    content: '▼'; /* Downward-pointing triangle for active state */
+	}
+
+        .panel {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.2s ease-out;
+            padding-left: 1em;
+        }
+    </style>
+</head>
+
+<body>
+    <form action="/Feedback/appV2" method="post">
+        <header>
+            <h1>AI Startup Predictor</h1>
+        </header>
+	 <!-- Welcome Message -->
+    <div class="welcome-container">
+        🚀 <strong>Welcome to the AI Startup Predictor!</strong> 🚀
+        <p>
+            Navigating the world of startups can be challenging. Let's simplify it. Fill in the details about your startup, and our advanced algorithms will predict its potential success. Every bit of information counts, so make sure you provide as much as possible. Let's embark on this exciting journey together!
+        </p>
+    </div>
+    
+        <div class="progress-container">
+            <div class="progress-bar" id="myBar"></div>
+        </div>
+
+        <!-- Company Info Section -->
+        <button type="button" class="accordion">Company Information</button>
+        <div class="panel">
+            <label for="age">Age of company in years:</label>
+            <div class="description">Specify the number of years since the startup was founded. (e.g., 5 for a 5-year old company).</div>
+            <input type="number" id="age" name="age" min="0" max="100" required><br><br>
+
+            <label for="employeeCount">Employee Count:</label>
+            <div class="description">Enter the total number of employees in the startup.</div>
+            <input type="number" id="employeeCount" name="employeeCount" min="0" max="5000" required><br><br>
+
+            <label for="employeePerYear">Employees per year of company existence:</label>
+            <div class="description">Enter the average number of employees hired per year since the startup's inception.</div>
+            <input type="number" id="employeePerYear" name="employeePerYear" min="0" max="500" required><br><br>
+
+            <label for="lastFundingAmount">Last Funding Amount:</label>
+            <div class="description">Enter the amount (in USD) the startup received in its last funding round.</div>
+            <input type="number" id="lastFundingAmount" name="lastFundingAmount" min="0" required><br><br>
+        </div>
+
+        <!-- Online Visibility Section -->
+        <button type="button" class="accordion">Online Visibility</button>
+        <div class="panel">
+            <label for="internetActivityScore">Internet Activity Score:</label>
+            <div class="description">Rate the company's online visibility and activity on a scale from 0 (Low Activity) to 100 (High Activity).</div>
+            <input type="number" id="internetActivityScore" name="internetActivityScore" min="0" max="100" required><br><br>
+
+            <label for="googlePageRank">Google page rank of company website:</label>
+            <div class="description">Enter the Google PageRank score for the startup's website. This score measures the importance and credibility of the 	website.</div>
+            <input type="number" id="googlePageRank" name="googlePageRank" min="0" max="5000000" required><br><br>
+        </div>
+
+        <!-- Technical Proficiency Section -->
+        <button type="button" class="accordion">Technical Proficiencies</button>
+        <div class="panel">
+            <label for="percentSkillDataScience">Percent skill Data Science:</label>
+            <div class="description">Rate the data science expertise of the startup team, particularly relevant to startup operations, on a scale of 0 (No expertise) to 100 (High expertise).</div>
+            <input type="number" id="percentSkillDataScience" name="percentSkillDataScience" min="0" max="100" required><br><br>
+
+            <label for="renowned">Renowned in professional circle (Scale: 0 to 500):</label>
+            <div class="description"> This score provides a comprehensive measure of the startup's or founder's overall renown or reputation, factoring in various aspects of their professional journey, such as media mentions, awards, and partnerships. A higher score indicates greater recognition in the industry.</div>
+            <input type="number" id="renowned" name="renowned" min="0" max="500" required><br><br>
+
+            <label data-required="true" for="structuredDataOnly">Does the startup focus on structured data only?</label>
+            <div class="description">Specify if the startup primarily deals with structured data over unstructured data.</div>
+            <input type="radio" id="structuredDataOnlyYes" name="structuredDataOnly" value="Yes">Yes
+            <input type="radio" id="structuredDataOnlyNo" name="structuredDataOnly" value="No">No<br><br>
+
+            <label data-required="true" for="technicalProficiency">Does the startup have the technical proficiencies to analyze and interpret unstructured data?</label>
+            <div class="description">Specify if the startup possesses the required technical skills and tools to handle and interpret unstructured data effectively.</div>
+            <input type="radio" id="technicalProficienciesYes" name="technicalProficiency" value="Yes">Yes
+            <input type="radio" id="technicalProficienciesNo" name="technicalProficiency" value="No">No<br><br>
+        </div>
+
+        <!-- Market and Strategy Section -->
+        <button type="button" class="accordion">Market and Strategy</button>
+        <div class="panel">
+            <label data-required="true" for="verticals">Does the startup cater to products or services across multiple verticals?</label>
+            <div class="description">State whether the startup provides solutions across multiple business verticals or sectors.</div>
+            <input type="radio" id="verticalsYes" name="verticals" value="Yes">Yes
+            <input type="radio" id="verticalsNo" name="verticals" value="No">No<br><br>
+
+            <label data-required="true" for="bigDataBusiness">Is the startup a Big Data Business?</label>
+            <div class="description">Specify if the startup's operations primarily revolve around big data analytics and related services.</div>
+            <input type="radio" id="bigDataBusinessYes" name="bigDataBusiness" value="Yes">Yes
+            <input type="radio" id="bigDataBusinessNo" name="bigDataBusiness" value="No">No<br><br>
+
+            <label data-required="true" for="hyperLocalisation">Does the startup focus on hyper-localisation?</label>
+            <div class="description">State if the startup's operations and services are tailored to hyper-local markets and demographics.</div>
+            <input type="radio" id="hyperLocalisationYes" name="hyperLocalisation" value="Yes">Yes
+            <input type="radio" id="hyperLocalisationNo" name="hyperLocalisation" value="No">No<br><br>
+
+            <label data-required="true" for="relevanceExperience">Is the prior experience of the team relevant to the venture?</label>
+            <div class="description">State if the professional experience of the team members is directly relevant to the startup's operations and objectives.</div>
+            <input type="radio" id="relevanceExperienceYes" name="relevanceExperience" value="Yes">Yes
+            <input type="radio" id="relevanceExperienceNo" name="relevanceExperience" value="No">No<br><br>
+
+            <label data-required="true" for="exposureGlobe">Do the founder or founders have global exposure or experience?</label>
+            <div class="description">Specify if any of the founders have worked, partnered, or interacted with professionals from various parts of the world.</div>
+            <input type="radio" id="exposureGlobeYes" name="exposureGlobe" value="Yes">Yes
+            <input type="radio" id="exposureGlobeNo" name="exposureGlobe" value="No">No<br><br>
+        </div>
+
+        <!-- Risks and Challenges Section -->
+        <button type="button" class="accordion">Risks and Challenges</button>
+        <div class="panel">
+            <label data-required="true" for="controversialHistory">Does the founder or co-founder have a controversial history?</label>
+            <div class="description">Specify if any founder or co-founder has had any past controversies that could affect the startup's reputation.</div>
+            <input type="radio" id="controversialHistoryYes" name="controversialHistory" value="Yes">Yes
+            <input type="radio" id="controversialHistoryNo" name="controversialHistory" value="No">No<br><br>
+
+            <label data-required="true" for="globalIncubation">Has the startup been invested in through global incubation competitions?</label>
+            <div class="description">Specify if the startup has received investments or endorsements from global incubation competitions or platforms.</div>
+            <input type="radio" id="globalIncubationYes" name="globalIncubation" value="Yes">Yes
+            <input type="radio" id="globalIncubationNo" name="globalIncubation" value="No">No<br><br>
+
+            <label data-required="true" for="survivalRecession">Has the startup survived through a recession?</label>
+            <div class="description">State if the startup has successfully navigated and remained operational through economic recessions.</div>
+            <input type="radio" id="survivalRecessionYes" name="survivalRecession" value="Yes">Yes
+            <input type="radio" id="survivalRecessionNo" name="survivalRecession" value="No">No<br><br>
+            <input type="radio" id="survivalRecessionNotApplicable" name="survivalRecession" value="Not Applicable">Not Applicable<br><br>
+
+            <label data-required="true" for="legalriskIP">Is there any legal risk or intellectual property issues?</label>
+            <div class="description">Specify if the startup faces any legal risks or has any intellectual property concerns.</div>
+            <input type="radio" id="legalriskIPYes" name="legalriskIP" value="Yes">Yes
+            <input type="radio" id="legalriskIPNo" name="legalriskIP" value="No">No<br><br>
+        </div>
+
+        <input type="submit" value="Predict">
+    </form>
+
+    <script>
+        var acc = document.getElementsByClassName("accordion");
+        for (var i = 0; i < acc.length; i++) {
+            acc[i].addEventListener("click", function() {
+                this.classList.toggle("active");
+                var panel = this.nextElementSibling;
+                if (panel.style.maxHeight) {
+                    panel.style.maxHeight = null;
+                } else {
+                    panel.style.maxHeight = panel.scrollHeight + "px";
+                }
+            });
+        }
+    </script>
+    
+    <script>
+        const form = document.querySelector('form');
+        const inputs = form.querySelectorAll('input, select');
+        const progressBar = document.getElementById('myBar');
+    
+        function updateProgressBar() {
+            let filledElements = 0;
+            let checkedRadioGroups = [];
+
+            inputs.forEach(input => {
+                if (input.type === 'radio') {
+                    if (input.checked && !checkedRadioGroups.includes(input.name)) {
+                        filledElements++;
+                        checkedRadioGroups.push(input.name);
+                    }
+                } else if (input.type === 'checkbox') {
+                    if (input.checked) filledElements++;
+                } else if (input.value) {
+                    filledElements++;
+                }
+            });
+
+            let totalElements = Array.from(new Set([...inputs].map(input => input.type === 'radio' ? input.name : input.id))).length;
+            let progress = (filledElements / totalElements) * 100;
+        
+            progressBar.style.height = progress + "%";  /* Adjusting height for vertical progress bar */
+            progressBar.innerHTML = Math.round(progress) + "%";
+        }
+
+        form.addEventListener('input', updateProgressBar);
+    </script>
+	
+    <script>
+document.querySelector('form').addEventListener('submit', function(event) {
+    let allFilled = true;
+    let missingFields = [];
+
+    // Check if every input field marked as required is filled
+    document.querySelectorAll('input[required], select[required]').forEach(input => {
+        if (!input.checkValidity()) {
+            allFilled = false;
+        }
+    });
+
+    // Check if every radio button group marked as required has an option selected
+    document.querySelectorAll('label[data-required="true"]').forEach(label => {
+        let name = label.getAttribute('for');
+        let radios = document.querySelectorAll(`input[type="radio"][name="${name}"]`);
+        let isSelected = [...radios].some(radio => radio.checked);
+        if (!isSelected) {
+            allFilled = false;
+            missingFields.push(label.innerText);
+        }
+    });
+
+    if (!allFilled) {
+        event.preventDefault();  // Stop form from submitting
+        alert(`Please fill in all required fields before submitting.\nMissing: ${missingFields.join(", ")}`);
+    }
+});
+    </script>
+
+</body>
+
+</html>

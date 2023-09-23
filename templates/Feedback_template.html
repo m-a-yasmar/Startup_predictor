@@ -1,0 +1,75 @@
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+
+    h2, h3, h4 {
+        color: #333;
+    }
+
+    p, .interpretation {
+        color: #555;
+    }
+
+    ul {
+        list-style-type: none;
+        padding-left: 0;
+    }
+
+    li {
+        margin-bottom: 7px;
+    }
+
+    .positive {
+        color: green;
+    }
+
+    .negative {
+        color: red;
+    }
+</style>
+
+<h2>Prediction: {{ prediction }}</h2>
+<p>Probability: {{ probability|round(2) }}%</p>
+
+<h3>Interpretation Guide</h3>
+<p class="interpretation">The prediction provides a model's estimation on the startup's outcome. The probability shows how confident the model is about its prediction. Below, you'll find indicators which highlight the strengths and weaknesses of the startup based on the provided data.</p>
+
+<h4 class="positive">Strengths of Your Startup:</h4>
+<p class="interpretation">The following factors are seen as favorable for your startup's chance of success:</p>
+<ul>
+    {% for item in explanation %}
+        {% if item.weight >= 0.01 %}
+            <li>
+                <strong>Your startup has {{ item.feature|lower }}.</strong> This contributes positively with an impact of +{{ item.weight|round(2) }}%.
+            </li>
+        {% endif %}
+    {% endfor %}
+</ul>
+
+<h4 class="negative">Areas for Improvement:</h4>
+<p class="interpretation">These factors may be potential challenges or areas of concern. Addressing these could increase your startup's chances of success.</p>
+<ul>
+    {% set minor_factors = [] %}
+    {% for item in explanation %}
+        {% if item.weight < -0.01 %}
+            <li>
+                <strong>Consider improving {{ item.feature|lower }} of your startup.</strong> This currently has a negative impact of {{ item.weight|round(2) }}%.
+            </li>
+        {% elif item.weight < 0 %}
+            {% set _ = minor_factors.append(item.feature) %}
+        {% endif %}
+    {% endfor %}
+</ul>
+
+{% if minor_factors %}
+<h4 class="negative">Minor Areas for Consideration:</h4>
+<p class="interpretation">While these factors have minor impacts, they might still be worth considering:</p>
+<ul>
+    {% for factor in minor_factors %}
+        <li>{{ factor }}</li>
+    {% endfor %}
+</ul>
+{% endif %}
+
+<p class="interpretation">It's essential to consider these insights alongside other information, expert opinions, and market research when making decisions about the startup.</p>
