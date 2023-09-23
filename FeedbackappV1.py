@@ -20,16 +20,17 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 model_path = os.path.join(BASE_DIR, 'rf_model_8020_sept22.joblib')
 scaler_path = os.path.join(BASE_DIR, 'scaler_rf8020_sept22.joblib')
 selector_path = os.path.join(BASE_DIR, 'selector_rf8020sept22.joblib')
-config_path = os.path.join(BASE_DIR, 'configpred50.yaml')
+#config_path = os.path.join(BASE_DIR, 'configpred50.yaml')
 training_data_path = os.path.join(BASE_DIR, 'training_rf8020_sept22.csv')
 
 # Load configuration safely
+# Load trained model, scaler, and feature selector
 try:
-    with open(config_path, 'r') as stream:
-        config = yaml.safe_load(stream)
+    model1 = load(model_path)
+    scaler = load(scaler_path)
+    selector = load(selector_path)
 except Exception as e:
-    print(f"Error loading the config file: {str(e)}")
-    config = {}
+    print(f"Error loading the model/scaler/selector files: {str(e)}")
 
 # Load trained model, scaler, and feature selector safely
 try:
@@ -75,7 +76,7 @@ for original_features in feature_mapping.values():
         original_feature_names.append(original_features)
 
 # Load training data as DataFrame
-training_data_df = pd.read_csv('C:/Users/ramsa/Documents/Python Bootcamp/training_data_14newdataset2.csv')
+training_data_df = pd.read_csv(training_data_path)
 training_data = training_data_df.values
 
 
