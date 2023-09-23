@@ -31,17 +31,7 @@ try:
 except Exception as e:
     print(f"Error loading the model/scaler/selector files: {str(e)}")
 
-# Load trained model, scaler, and feature selector safely
-try:
-    model1 = load(model_path)
-    scaler = load(scaler_path)
-    selector = load(selector_path)
-except Exception as e:
-    print(f"Error loading the model/scaler/selector files: {str(e)}")
-
-
-
-
+#
 feature_mapping = {
     'age': 'Age of company in years',
     'internetActivityScore': 'Internet Activity Score',
