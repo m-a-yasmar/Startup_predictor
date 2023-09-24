@@ -9,7 +9,7 @@ Werkzeug==2.3.7
 zipp==3.17.0
 shap==0.41.0
 Cython==3.0.2
-Flask==2.3.7
+Flask==2.3.3
 pandas==1.4.2
 scikit-learn==1.0.1
 joblib==1.2.0
