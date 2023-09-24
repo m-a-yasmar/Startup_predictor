@@ -8,7 +8,6 @@ import os
 import shap
 
 
-
 FeedbackappV2 = Flask(__name__)
 
 
@@ -35,6 +34,8 @@ except Exception as e:
     print(f"Error loading the scaler: {str(e)}")
 
 
+
+
 feature_mapping = {
     'age': 'Age of company in years',
     'internetActivityScore': 'Internet Activity Score',
@@ -56,7 +57,6 @@ feature_mapping = {
     'survivalRecession': ("How the Recession significantly impacted the company's viability",'The chances of Survival during the recession when applicable to the company',),  
     'technicalProficiency': ('Technical proficiencies to analyse and interpret unstructured data',)  
 }  
-
 reverse_feature_mapping = {v: k for k, vs in feature_mapping.items() for v in (vs if isinstance(vs, tuple) else (vs,))}
 
 # Extracting the original feature names
