@@ -221,6 +221,10 @@ def predict_app():
                            feature_mapping=feature_mapping)
 
 # Run the flask app
+#if __name__ == '__main__':
+    #FeedbackappV2.run(debug=False)
+
 if __name__ == '__main__':
-    FeedbackappV2.run(debug=False)
-  
+    import os
+    port = int(os.environ.get('PORT', 5000))
+    FeedbackappV2.run(host='0.0.0.0', port=port, debug=False)
